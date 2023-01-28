@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/created-by: application-service
+    app.kubernetes.io/instance: test-component-mqtf
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: test-component-mqtf
+    app.kubernetes.io/part-of: test-app-gbid
+  name: test-component-mqtf
+  namespace: build-e2e-hacbs-buih
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: test-component-mqtf
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: test-component-mqtf
+    spec:
+      containers:
+      - image: quay.io/redhat-appstudio-qe/test-images:efcd8b0e55f04551979470d8f2ce51c4
+        imagePullPolicy: Always
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8081
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        name: container-image
+        ports:
+        - containerPort: 8081
+        readinessProbe:
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          tcpSocket:
+            port: 8081
+        resources: {}
+status: {}
